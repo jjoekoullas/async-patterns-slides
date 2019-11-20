@@ -1,0 +1,133 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/css/theme/white.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/lib/css/monokai.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <style>
+        table tr td {
+            vertical-align: middle !important;
+        }
+
+        .reveal code {
+            font-family: 'Fira Code';
+        }
+    </style>
+</head>
+
+<body>
+    <div class="reveal">
+        <div class="slides">
+            <section>
+                <h1>Definition</h1>
+                <blockquote>
+                    "of or requiring a form of computer control timing protocol in which a <strong>specific operation
+                        begins upon receipt of an indication (signal) that the preceding operation has been
+                        completed.</strong>"
+                </blockquote>
+            </section>
+            <section>
+                <h1>Callbacks</h1>
+                <pre><code class="javascript">setTimeout(() => alert('ding'), 0)</code></pre>
+            </section>
+            <section>
+                <h1>Promises</h1>
+                <pre><code class="javascript">
+                    var p = new Promise((resolve, reject) => setTimeout(resolve, 0));
+
+                    p.then(() => alert('ding'))
+                </code></pre>
+            </section>
+            <section>
+                <h1>Promise Constructor Antipattern</h1>
+                <p>In my decade of front end development, I have had exactly 1 necessary usage of a promise constructor.
+                </p>
+            </section>
+            <section>
+                <h1>Async/await</h1>
+                <pre><code class="javascript">
+                    async function() {
+                        var p = new Promise((resolve, reject) => setTimeout(resolve(7), 0))
+
+                        var r = await p;
+
+                        return 6 * r;
+                    }
+                </code></pre>
+            </section>
+            <section>Callback hell
+                <section>
+                    <pre><code class="javascript">
+                    method(result => {
+                        otherMethod(result, otherResult => {
+                            andAgain(otherReuslt, anotherResult => {
+                                finallyFinish(anotherResult, finalResult =>
+                                    doSomething(finalResult)
+                                )
+                            })
+                        })
+                    })
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>Promises to the rescue</h1>
+                    <pre><code class="javascript">
+                    method
+                        .then(result => otherMethod(result))
+                        .then(otherResult => andAgain(otherResult))
+                        .then(anotherResult => finallyFinish(anotherResult))
+                </code></pre>
+                </section>
+            </section>
+
+            <section>
+                Handling failure
+                <section>
+                    <h1>Promise methods</h1>
+                    <pre><code class="javascript">
+                    method
+                        .then(success => doTheThing(success))
+                        .catch(failure => recoverFromFailure())
+                        .finally(() => alwaysHappens())
+                    </code></pre>
+                </section>
+                <section>
+                    <h1>async/await</h1>
+                    <pre><code class="javascript">
+                        try {
+                            doTheThing(await method);
+                        } catch (failure) {
+                            recoverFromFailure()
+                        } finally {
+                            alwayHappens()
+                        }
+                    </code></pre>
+                </section>
+            </section>
+            <section>
+                <h1>Promise.all</h1>
+                <pre><code class="typescript">
+                    const [r, r1, r2] = await Promise.all([p, p1, p2])
+                </code></pre>
+            </section>
+            <section>
+                <h1>Bluebird</h1>
+                <a href="http://bluebirdjs.com/docs/api-reference.html">Api reference</a>
+                <p>Lots of exotic methods, but the docs aren't exactly easy to understand.</p>
+            </section>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/js/reveal.js"></script>
+    <script>
+        Reveal.initialize({
+            height: '100%', width: '100%', controls: true,
+            dependencies: [
+                { src: "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/3.8.0/plugin/highlight/highlight.js", async: true }
+            ]
+        });
+    </script>
+</body>
+
+</html>
